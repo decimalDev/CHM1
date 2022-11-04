@@ -5,9 +5,12 @@
 #include<stdio.h>
 #include<cmath>
 
+
+/*
 double expression(double x) {
 	return exp(x) / (1 + x * x);
 }
+*/
 
 double divided_differences(double (*function)(double),std::vector<double> &X,int n,int i,int j){
 	if(n==0){
@@ -166,11 +169,7 @@ double Newton_show_optimal(double (*function)(double),double a,double b,int n){
 	return max;
 }
 
-void compare_L_and_N(int n){
-	double L = Lagrange_max_deviation(expression,0,2,n);
-	double N = Newton_max_deviation(expression,0,2,n);
-	printf("max deviation Lagrange:%lf and Newton:%lf\n",L,N);
-}
+
 
 
 

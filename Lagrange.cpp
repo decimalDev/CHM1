@@ -4,6 +4,7 @@
 #include<vector>
 #include<stdio.h>
 #include<cmath>
+#include "Newton.hpp"
 #define _USE_MATH_DEFINES
 
 double expression(double x) { //функция из варианта
@@ -147,6 +148,12 @@ double Chebyshev_compare(double (*function)(double), double a, double b, int n) 
 	return max;
 }
 
+void compare_L_and_N(int n){
+	double L = Lagrange_max_deviation(expression,0,2,n);
+	double N = Newton_max_deviation(expression,0,2,n);
+	printf("max deviation Lagrange:%.10lf and Newton:%.10lf\n",L,N);
+}
+
 int main(){
 	int n = 10;
 	int n_0; double max_div_uniform;
@@ -154,7 +161,8 @@ int main(){
 	double max_div_chebyshev = Chebyshev_compare(expression, 0, 2, n_0);
 	printf("max div uniform %.10lf\n", max_div_uniform);
 	printf("max_div_chebyshev %.10lf\n", max_div_chebyshev);
-	if (max_div_chebyshev < max_div_uniform)  printf("Chebyshev grid is better than the uniform one.");
-	else printf("Chebyshev grid is not better that the uniform one");
+	if (max_div_chebyshev < max_div_uniform)  printf("Chebyshev grid is better than the uniform one\n");
+	else printf("Chebyshev grid is not better that the uniform one\n");
+	compare_L_and_N(n_0);
 	return 0;
 }
