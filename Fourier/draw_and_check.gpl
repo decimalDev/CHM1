@@ -1,0 +1,7 @@
+reset
+f(x) = exp(x)/(1+x*x)
+set xrange [0:2]
+set yrange [0:2] 
+plot f(x) with lines linestyle 2, \
+'Fourier.txt' with linespoints linestyle 1
+set out # закрываем файл

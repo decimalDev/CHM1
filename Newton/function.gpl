@@ -1,0 +1,6 @@
+a = 0.9
+f(x) = exp(x)/(1+x*x)
+set xrange [0:5]
+set yrange [0:5]
+# Plot
+plot f(x) title 'sin(x)' with lines linestyle 1
