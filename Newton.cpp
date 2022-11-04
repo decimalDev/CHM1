@@ -16,14 +16,14 @@ double divided_differences(double (*function)(double),std::vector<double> &X,int
 	return ( divided_differences(function,X,n-1,i,j-1) - divided_differences(function,X,n-1,i+1,j) )/(X[i]-X[j]);
 }
 
-void Isaac_Newton_is_thinking(double (*function)(double),std::vector<double> X,std::vector<double> &Coeffisients){
+void Newton_coeffs(double (*function)(double),std::vector<double> X,std::vector<double> &Coeffisients){
 	int n = X.size();
 	for(int i = 0;i<n;i++){
 		Coeffisients.push_back(divided_differences(function,X,i,0,i));
 	}
 }
 
-double Isaac_Newton_is_calculating(double x,std::vector<double> X,std::vector<double> &Coeffisients){
+double Newton_value(double x,std::vector<double> X,std::vector<double> &Coeffisients){
 	int n = Coeffisients.size();
 	
 	double result = Coeffisients[0];
@@ -39,7 +39,7 @@ double Isaac_Newton_is_calculating(double x,std::vector<double> X,std::vector<do
 	return result;
 }
 
-double Isaac_Newton_give_me_order(double (*function)(double),double a,double b,int n,double x){
+double Newton(double (*function)(double),double a,double b,int n,double x){
 	double h = (b-a)/n;
 	n++;
 	std::vector<double> X;
@@ -47,9 +47,9 @@ double Isaac_Newton_give_me_order(double (*function)(double),double a,double b,i
 		X.push_back(a+h*i);
 	}
 	std::vector<double> Coeffisients;
-	Isaac_Newton_is_thinking(function,X,Coeffisients);
-	//std::cout<<"Isaac Newton is tired. And found number is "<<Isaac_Newton_is_calculating(x,Coeffisients,a,b,n)<<std::endl;
-	double res = Isaac_Newton_is_calculating(x,X,Coeffisients);
+	Newton_coeffs(function,X,Coeffisients);
+	//std::cout<<"Isaac Newton is tired. And found number is "<<Newton_value(x,Coeffisients,a,b,n)<<std::endl;
+	double res = Newton_value(x,X,Coeffisients);
 	
 	return res;
 }
@@ -57,8 +57,8 @@ double Isaac_Newton_give_me_order(double (*function)(double),double a,double b,i
 
 
 
-double Isaac_Newton_give_me_order_optimal(double (*function)(double),std::vector<double> &X,std::vector<double> &Coeffisients,double x){
-	double res = Isaac_Newton_is_calculating(x,X,Coeffisients);
+double Newton_optimal(double (*function)(double),std::vector<double> &X,std::vector<double> &Coeffisients,double x){
+	double res = Newton_value(x,X,Coeffisients);
 	
 	return res;
 }
@@ -68,7 +68,7 @@ double Isaac_Newton_give_me_order_optimal(double (*function)(double),std::vector
 
 int write_n;
 
-double Isaac_Newton_max_difference(double (*function)(double),double a,double b,int n){
+double Newton_max_deviation(double (*function)(double),double a,double b,int n){
 
 	int delta_n = 100000;
 	double h = (b-a)/delta_n;
@@ -86,12 +86,12 @@ double Isaac_Newton_max_difference(double (*function)(double),double a,double b,
 		X_interpolation.push_back(a+h_interpolation*i);
 	}
 	std::vector<double> Coeffisients;
-	Isaac_Newton_is_thinking(function,X_interpolation,Coeffisients);
+	Newton_coeffs(function,X_interpolation,Coeffisients);
 	
 	for(int i = 0;i<delta_n;i++){
 
-		value = function(X[i]) - Isaac_Newton_give_me_order_optimal(function,X_interpolation,Coeffisients,X[i]);
-		//std::cout<<"value="<<value<<" func="<<function(X[i])<<" intep="<<Isaac_Newton_give_me_order_optimal(function,X_interpolation,Coeffisients,X[i])<<std::endl;
+		value = function(X[i]) - Newton_optimal(function,X_interpolation,Coeffisients,X[i]);
+		//std::cout<<"value="<<value<<" func="<<function(X[i])<<" intep="<<Newton_optimal(function,X_interpolation,Coeffisients,X[i])<<std::endl;
 		value = std::abs(value);
 		
 		//fprintf(out,"%lf %lf\n",X[i],value);
@@ -103,7 +103,7 @@ double Isaac_Newton_max_difference(double (*function)(double),double a,double b,
 }
 
 
-double Isaac_Newton_show(double (*function)(double),double a,double b,int n){
+double Newton_show(double (*function)(double),double a,double b,int n){
 	FILE* out;
 	//if(write_n==n)
 	out = fopen("Newton/Newton.txt","w");
@@ -122,7 +122,7 @@ double Isaac_Newton_show(double (*function)(double),double a,double b,int n){
 	
 	for(int i = 0;i<delta_n;i++){
 
-		value = Isaac_Newton_give_me_order(function,a,b,n,X[i]);
+		value = Newton(function,a,b,n,X[i]);
 		fprintf(out,"%lf %lf\n",X[i],value);
 	}
 	
@@ -131,7 +131,7 @@ double Isaac_Newton_show(double (*function)(double),double a,double b,int n){
 
 
 
-double Isaac_Newton_show_optimal(double (*function)(double),double a,double b,int n){
+double Newton_show_optimal(double (*function)(double),double a,double b,int n){
 	FILE* out;
 	out = fopen("Newton/Newton.txt","w");
 	
@@ -154,11 +154,11 @@ double Isaac_Newton_show_optimal(double (*function)(double),double a,double b,in
 		X_interpolation.push_back(a+h_interpolation*i);
 	}
 	std::vector<double> Coeffisients;
-	Isaac_Newton_is_thinking(function,X_interpolation,Coeffisients);
+	Newton_coeffs(function,X_interpolation,Coeffisients);
 	
 	for(int i = 0;i<delta_n;i++){
 
-		value = Isaac_Newton_give_me_order_optimal(function,X_interpolation,Coeffisients,X[i]);
+		value = Newton_optimal(function,X_interpolation,Coeffisients,X[i]);
 
 		//std::cout<<"point x="<<X[i]<<std::endl;
 		fprintf(out,"%lf %lf\n",X[i],value);
@@ -176,7 +176,7 @@ int task3(){
 	//FILE* out = fopen("Newton.txt","w");
 	int n0 = 2;
 	double value;
-	Isaac_Newton_show_optimal(expression,0,2,n0);
+	Newton_show_optimal(expression,0,2,n0);
 	
 	FILE* out = fopen("Newton/max_difference.txt","w");
 	double max_difference[15];
@@ -185,7 +185,7 @@ int task3(){
 	
 	
 	for(int n = 1;n<16;n++){
-		max_difference[n-1] = Isaac_Newton_max_difference(expression,0,2,n);
+		max_difference[n-1] = Newton_max_deviation(expression,0,2,n);
 		printf("n = %d\t max_dif = %lf\n",n,max_difference[n-1]);
 		fprintf(out,"%d %lf\n",n,max_difference[n-1]);
 		if(max_difference[n-1]<max_difference[min_i]) min_i = n-1;
@@ -196,7 +196,7 @@ int task3(){
 }
 int main(){
 	//int n = 10;
-	//Isaac_Newton_show_optimal(expression,0,2,n);
+	//Newton_show_optimal(expression,0,2,n);
 	task3();
 	return 0;
 }
