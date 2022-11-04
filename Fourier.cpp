@@ -124,7 +124,7 @@ double dot_product_sin_with_displacement(double (*function)(double),std::vector<
 	
 }
 
-void Jean_Baptiste_Joseph_Fourier_is_thinking(double (*function)(double),std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients){
+void Fourier_coeffs(double (*function)(double),std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients){
 	
 	int n = X.size();
 	Coeffisients.push_back(std::pair<double,double>{dot_product_cos(function,X,0)/2,dot_product_sin(function,X,0)/2});
@@ -135,7 +135,7 @@ void Jean_Baptiste_Joseph_Fourier_is_thinking(double (*function)(double),std::ve
 }
 
 
-void Jean_Baptiste_Joseph_Fourier_is_thinking_with_displacement(double (*function)(double),std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients,double displacement){
+void Fourier_coeffs_with_displacement(double (*function)(double),std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients,double displacement){
 	
 	int n = X.size();
 	Coeffisients.push_back(std::pair<double,double>{dot_product_cos_with_displacement(function,X,0,displacement)/2,dot_product_sin_with_displacement(function,X,0,displacement)/2});
@@ -148,7 +148,7 @@ void Jean_Baptiste_Joseph_Fourier_is_thinking_with_displacement(double (*functio
 
 
 
-double Jean_Baptiste_Joseph_Fourier_is_calculating(double parametr_x,std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients){
+double Fourier_value(double parametr_x,std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients){
 	int n = Coeffisients.size();
 	
 	double result = 0;
@@ -162,7 +162,7 @@ double Jean_Baptiste_Joseph_Fourier_is_calculating(double parametr_x,std::vector
 }
 
 
-double Jean_Baptiste_Joseph_Fourier_is_calculating_with_displacement(double parametr_x,std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients,double displacement){
+double Fourier_value_with_displacement(double parametr_x,std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients,double displacement){
 	int n = Coeffisients.size();
 	
 	double result = 0;
@@ -178,7 +178,7 @@ double Jean_Baptiste_Joseph_Fourier_is_calculating_with_displacement(double para
 
 
 
-double Jean_Baptiste_Joseph_Fourier_give_me_order(double (*function)(double),double a,double b,int n,double x){
+double Fourier(double (*function)(double),double a,double b,int n,double x){
 	double h = (b-a)/n;
 	n++;
 	std::vector<double> X;
@@ -186,9 +186,9 @@ double Jean_Baptiste_Joseph_Fourier_give_me_order(double (*function)(double),dou
 		X.push_back(a+h*i);
 	}
 	std::vector<std::pair<double,double>> Coeffisients;
-	Jean_Baptiste_Joseph_Fourier_is_thinking(function,X,Coeffisients);
+	Fourier_coeffs(function,X,Coeffisients);
 	//std::cout<<"Isaac Newton is tired. And found number is "<<Isaac_Newton_is_calculating(x,Coeffisients,a,b,n)<<std::endl;
-	double res = Jean_Baptiste_Joseph_Fourier_is_calculating(x,X,Coeffisients);
+	double res = Fourier_value(x,X,Coeffisients);
 	
 	
 	return res;
@@ -196,7 +196,7 @@ double Jean_Baptiste_Joseph_Fourier_give_me_order(double (*function)(double),dou
 
 
 
-double Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement(double (*function)(double),double a,double b,int n,double x){
+double Fourier_with_displacement(double (*function)(double),double a,double b,int n,double x){
 	double h = (b-a)/n;
 	double displacement = (a+b)/2;
 	n++;
@@ -205,9 +205,9 @@ double Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement(double (*fun
 		X.push_back(a+h*i-displacement);
 	}
 	std::vector<std::pair<double,double>> Coeffisients;
-	Jean_Baptiste_Joseph_Fourier_is_thinking_with_displacement(function,X,Coeffisients,displacement);
+	Fourier_coeffs_with_displacement(function,X,Coeffisients,displacement);
 	//std::cout<<"Isaac Newton is tired. And found number is "<<Isaac_Newton_is_calculating(x,Coeffisients,a,b,n)<<std::endl;
-	double res = Jean_Baptiste_Joseph_Fourier_is_calculating_with_displacement(x,X,Coeffisients,displacement);
+	double res = Fourier_value_with_displacement(x,X,Coeffisients,displacement);
 	
 	
 	return res;
@@ -215,12 +215,12 @@ double Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement(double (*fun
 
 
 
-double Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement_optimal(double (*function)(double),std::vector<double> X,std::vector<std::pair<double,double>> &Coeffisients,double x,double displacement){
+double Fourier_with_displacement_optimal(double (*function)(double),std::vector<double> X,std::vector<std::pair<double,double>> &Coeffisients,double x,double displacement){
 	
 
-	//Jean_Baptiste_Joseph_Fourier_is_thinking_with_displacement(function,X,Coeffisients,displacement);
+	//Fourier_coeffs_with_displacement(function,X,Coeffisients,displacement);
 	//std::cout<<"Isaac Newton is tired. And found number is "<<Isaac_Newton_is_calculating(x,Coeffisients,a,b,n)<<std::endl;
-	double res = Jean_Baptiste_Joseph_Fourier_is_calculating_with_displacement(x,X,Coeffisients,displacement);
+	double res = Fourier_value_with_displacement(x,X,Coeffisients,displacement);
 	
 	
 	return res;
@@ -229,26 +229,26 @@ double Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement_optimal(doub
 
 
 
-double Jean_Baptiste_Joseph_Fourier_show(double (*function)(double),double a,double b,int n){
+double Fourier_show(double (*function)(double),double a,double b,int n){
 	FILE* out;
 	//if(write_n==n)
 	out = fopen("Fourier/Fourier.txt","w");
 	
 	
-	int delta_n = 1000;
-	double h = (b-a)/delta_n;
-	delta_n++;
+	int grid = 1000;
+	double h = (b-a)/grid;
+	grid++;
 	std::vector<double> X;
-	for(int i = 0;i<delta_n;i++) X.push_back(a+i*h);
+	for(int i = 0;i<grid;i++) X.push_back(a+i*h);
 	
 	double max = 0;
 	double value;
 
 	
 	
-	for(int i = 0;i<delta_n;i++){
+	for(int i = 0;i<grid;i++){
 
-		value = Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement(function,a,b,n,X[i]);
+		value = Fourier_with_displacement(function,a,b,n,X[i]);
 		
 		fprintf(out,"%lf %lf\n",X[i],value);
 	}
@@ -257,17 +257,17 @@ double Jean_Baptiste_Joseph_Fourier_show(double (*function)(double),double a,dou
 }
 
 
-double Jean_Baptiste_Joseph_Fourier_show_optimal(double (*function)(double),double a,double b,int n){
+double Fourier_show_optimal(double (*function)(double),double a,double b,int n){
 	FILE* out;
 	//if(write_n==n)
 	out = fopen("Fourier/Fourier.txt","w");
 	
 
-	int delta_n = 1000;
-	double h = (b-a)/delta_n;
-	delta_n++;
+	int grid = 1000;
+	double h = (b-a)/grid;
+	grid++;
 	std::vector<double> X;
-	for(int i = 0;i<delta_n;i++) X.push_back(a+i*h);
+	for(int i = 0;i<grid;i++) X.push_back(a+i*h);
 	
 	double max = 0;
 	double value;
@@ -280,12 +280,12 @@ double Jean_Baptiste_Joseph_Fourier_show_optimal(double (*function)(double),doub
 		X_interpolation.push_back(a+h_interpolation*i-displacement);
 	}
 	std::vector<std::pair<double,double>> Coeffisients;
-	Jean_Baptiste_Joseph_Fourier_is_thinking_with_displacement(function,X_interpolation,Coeffisients,displacement);
+	Fourier_coeffs_with_displacement(function,X_interpolation,Coeffisients,displacement);
 	
-	for(int i = 0;i<delta_n;i++){
+	for(int i = 0;i<grid;i++){
 		
 		
-		value = Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement_optimal(function,X_interpolation,Coeffisients,X[i],displacement);
+		value = Fourier_with_displacement_optimal(function,X_interpolation,Coeffisients,X[i],displacement);
 		
 		fprintf(out,"%lf %lf\n",X[i],value);
 	}
@@ -296,17 +296,17 @@ double Jean_Baptiste_Joseph_Fourier_show_optimal(double (*function)(double),doub
 
 
 
-double Jean_Baptiste_Joseph_Fourier_max_difference(double (*function)(double),double a,double b,int n){
+double Fourier_max_difference(double (*function)(double),double a,double b,int n){
 	
 	FILE* out;
 	//if(write_n==n)
 	out = fopen("Fourier/Fourier.txt","w");
 	
-	int delta_n = 100000;
-	double h = (b-a)/delta_n;
-	delta_n++;
+	int grid = 100000;
+	double h = (b-a)/grid;
+	grid++;
 	std::vector<double> X;
-	for(int i = 0;i<delta_n;i++) X.push_back(a+i*h);
+	for(int i = 0;i<grid;i++) X.push_back(a+i*h);
 	
 	double max = 0;
 	double value;
@@ -328,17 +328,17 @@ double Jean_Baptiste_Joseph_Fourier_max_difference(double (*function)(double),do
 	
 	
 	std::vector<std::pair<double,double>> Coeffisients;
-	Jean_Baptiste_Joseph_Fourier_is_thinking_with_displacement(function,X_interpolation,Coeffisients,displacement);
+	Fourier_coeffs_with_displacement(function,X_interpolation,Coeffisients,displacement);
 	
 	
 	int i = 0;
 	while(X[++i]<a);
 	
-	while(X[--delta_n]>b);
+	while(X[--grid]>b);
 	
-	for(;i<delta_n;i++){
+	for(;i<grid;i++){
 		//printf("expr(x) = %lf and interpolation(x) = %lf\n",function(X[i]),Josepf_Lui_Lagrange_give_me_order(function,a,b,n,X[i]));
-		value = Jean_Baptiste_Joseph_Fourier_give_me_order_with_displacement_optimal(function,X_interpolation,Coeffisients,X[i],displacement);
+		value = Fourier_with_displacement_optimal(function,X_interpolation,Coeffisients,X[i],displacement);
 		fprintf(out,"%lf %lf\n",X[i],value);
 		value -= function(X[i]);
 		value = std::abs(value);
@@ -363,7 +363,7 @@ int task4(){
 	double difference = 100;
 	int n = INTEGRATION_DIVIDE/2;
 	while(difference>0.0005&&n<500){
-		difference = Jean_Baptiste_Joseph_Fourier_max_difference(expression,0,2,n);
+		difference = Fourier_max_difference(expression,0,2,n);
 		printf("n = %d\t max_dif = %lf\n",n,difference);
 		fprintf(out,"%d %lf\n",n,difference);
 		n++;
@@ -376,7 +376,7 @@ int task4(){
 
 int main(){
 	int n = 4;
-	Jean_Baptiste_Joseph_Fourier_show_optimal(expression,0,2,n);
+	Fourier_show_optimal(expression,0,2,n);
 	task4();
 	return 0;
 }
