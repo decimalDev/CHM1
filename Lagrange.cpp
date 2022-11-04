@@ -99,18 +99,18 @@ int task2(int n_max){ //для всех n от 1 до n_max вычисляет �
 
 	FILE* dev_0 = fopen("Lagrange/n0_difference.txt", "w");
 	int grid = 100000;
-	double h = (b - a) / grid;
+	double h = (2.0) / grid;
 	grid++;
 	std::vector<double> X;
-	for (int i = 0; i < grid; i++) X.push_back(a + i * h);
+	for (int i = 0; i < grid; i++) X.push_back( i * h);
 	for (int i = 0; i < grid; i++) {
-		fprintf(dev_0, "%d %lf\n", x[i], function(X[i]) - Lagrange(function, a, b, n, X[i]);
+		fprintf(dev_0, "%lf %lf\n", X[i], expression(X[i]) - Lagrange(expression, 0, 2, n_0, X[i]));
 	}
 	return 0;
 }
 
 int main(){
 	int n = 10;
-	task2();
+	task2(15);
 	return 0;
 }
