@@ -48,7 +48,7 @@ double Newton(double (*function)(double),double a,double b,int n,double x){
 	}
 	std::vector<double> Coeffisients;
 	Newton_coeffs(function,X,Coeffisients);
-	//std::cout<<"Isaac Newton is tired. And found number is "<<Newton_value(x,Coeffisients,a,b,n)<<std::endl;
+
 	double res = Newton_value(x,X,Coeffisients);
 	
 	return res;
@@ -65,16 +65,13 @@ double Newton_optimal(double (*function)(double),std::vector<double> &X,std::vec
 
 
 
-
-int write_n;
-
 double Newton_max_deviation(double (*function)(double),double a,double b,int n){
 
-	int delta_n = 100000;
-	double h = (b-a)/delta_n;
-	delta_n++;
+	int grid = 100000;
+	double h = (b-a)/grid;
+	grid++;
 	std::vector<double> X;
-	for(int i = 0;i<delta_n;i++) X.push_back(a+i*h);
+	for(int i = 0;i<grid;i++) X.push_back(a+i*h);
 	
 	double max = 0;
 	double value;
@@ -88,7 +85,7 @@ double Newton_max_deviation(double (*function)(double),double a,double b,int n){
 	std::vector<double> Coeffisients;
 	Newton_coeffs(function,X_interpolation,Coeffisients);
 	
-	for(int i = 0;i<delta_n;i++){
+	for(int i = 0;i<grid;i++){
 
 		value = function(X[i]) - Newton_optimal(function,X_interpolation,Coeffisients,X[i]);
 		//std::cout<<"value="<<value<<" func="<<function(X[i])<<" intep="<<Newton_optimal(function,X_interpolation,Coeffisients,X[i])<<std::endl;
@@ -109,18 +106,18 @@ double Newton_show(double (*function)(double),double a,double b,int n){
 	out = fopen("Newton/Newton.txt","w");
 	
 	
-	int delta_n = 1000;
-	double h = (b-a)/delta_n;
-	delta_n++;
+	int grid = 1000;
+	double h = (b-a)/grid;
+	grid++;
 	std::vector<double> X;
-	for(int i = 0;i<delta_n;i++) X.push_back(a+i*h);
+	for(int i = 0;i<grid;i++) X.push_back(a+i*h);
 	
 	double max = 0;
 	double value;
 
 	
 	
-	for(int i = 0;i<delta_n;i++){
+	for(int i = 0;i<grid;i++){
 
 		value = Newton(function,a,b,n,X[i]);
 		fprintf(out,"%lf %lf\n",X[i],value);
@@ -136,11 +133,11 @@ double Newton_show_optimal(double (*function)(double),double a,double b,int n){
 	out = fopen("Newton/Newton.txt","w");
 	
 	
-	int delta_n = 1000;
-	double h = (b-a)/delta_n;
-	delta_n++;
+	int grid = 1000;
+	double h = (b-a)/grid;
+	grid++;
 	std::vector<double> X;
-	for(int i = 0;i<delta_n;i++) X.push_back(a+i*h);
+	for(int i = 0;i<grid;i++) X.push_back(a+i*h);
 	
 	double max = 0;
 	double value;
@@ -156,7 +153,7 @@ double Newton_show_optimal(double (*function)(double),double a,double b,int n){
 	std::vector<double> Coeffisients;
 	Newton_coeffs(function,X_interpolation,Coeffisients);
 	
-	for(int i = 0;i<delta_n;i++){
+	for(int i = 0;i<grid;i++){
 
 		value = Newton_optimal(function,X_interpolation,Coeffisients,X[i]);
 
@@ -169,9 +166,15 @@ double Newton_show_optimal(double (*function)(double),double a,double b,int n){
 	return max;
 }
 
+void compare_L_and_N(int n){
+	double L = Lagrange_max_deviation(expression,0,2,n);
+	double N = Newton_max_deviation(expression,0,2,n);
+	printf("max deviation Lagrange:%lf and Newton:%lf\n",L,N);
+}
 
 
 
+/*
 int task3(){
 	//FILE* out = fopen("Newton.txt","w");
 	int n0 = 2;
@@ -200,3 +203,4 @@ int main(){
 	task3();
 	return 0;
 }
+*/
