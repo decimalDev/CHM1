@@ -6,4 +6,4 @@ set style line 1 \
     linetype 1 linewidth 2 \
     pointtype 7 pointsize 1.5
 
-plot 'n0_difference.txt' with linespoints linestyle 1
+plot 'max_difference.txt' with linespoints linestyle 1
