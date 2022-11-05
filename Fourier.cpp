@@ -12,9 +12,6 @@ double expression(double x) {
 	return exp(x) / (1 + x * x);
 }
 
-double expression2(double x) {
-	return exp(x) / (1 + (alpha*x+betta)*(alpha*x+betta));
-}
 
 std::pair<double,double> Coeffisient(double (*function)(double), std::vector<double> X,int k){
 	int n = X.size();//=2*N+1
@@ -53,7 +50,7 @@ void Fourier_show(double (*function)(double),int n){
 	out = fopen("Fourier/Fourier.txt","w");
 	
 	int grid = 10000;
-	double h = (M_PI)/grid;
+	double h = (2*M_PI)/grid;
 	grid++;
 	std::vector<double> X;
 	for(int i = 0;i<grid;i++) X.push_back(i*h);
@@ -78,13 +75,33 @@ void Fourier_show(double (*function)(double),int n){
 	}
 	
 }
+
+
+double expression2(double x) {
+	return exp(alpha*x+betta) / (1 + (alpha*x+betta)*(alpha*x+betta));
+}
+
+
+double Fourier_value2(double parametr_x,std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients){
+	int n = Coeffisients.size();
+	
+	double result = 0;
+	
+	for(int k = 0;k<n;k++){
+		result += Coeffisients[k].first*cos(k*parametr_x) + Coeffisients[k].second*sin((k*parametr_x));
+		//printf("res=%lf\n",result);
+	}
+
+	return result;
+}
+
 
 void Fourier_show2(double (*function)(double),int n){
 	FILE* out;
 	out = fopen("Fourier/Fourier.txt","w");
 	
 	int grid = 10000;
-	double h = (M_PI)/grid;
+	double h = (2*M_PI)/grid;
 	grid++;
 	std::vector<double> X;
 	for(int i = 0;i<grid;i++) X.push_back(i*h);
@@ -102,13 +119,14 @@ void Fourier_show2(double (*function)(double),int n){
 	
 	for(int i = 0;i<grid;i++){
 
-		value = Fourier_value(X[i],X_interpolation,Coeffisients);
+		value = Fourier_value2(X[i],X_interpolation,Coeffisients);
 		//std::cout<<"value="<<value<<" func="<<function(X[i])<<" intep="<<Newton_optimal(function,X_interpolation,Coeffisients,X[i])<<std::endl;
 		
-		fprintf(out,"%lf %lf\n",X[i],value);
+		fprintf(out,"%lf %lf\n",X[i]*alpha+betta,value);
 	}
 	
 }
+
 
 int main(){
 	int n;
