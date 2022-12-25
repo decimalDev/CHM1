@@ -1,4 +1,5 @@
 #include "Polynom.h"
+#include<stdio.h>
 /*
 double expression(double x) {
 	return exp(x) / (1 + x * x);
@@ -185,6 +186,8 @@ Polynom BUA_for_Function()
 	Polynom Q = BUA_for_Polynom(P, a, b);
 	double dev_new, dev_old; Polynom Buf;
 	dev_new = deviation(Q);
+	FILE* out;
+	fopen_s(&out,"task5/difference.txt","w");
 	while (dev_new <= 0.0005)
 	//while (dev_new <= 0.001)
 	{
@@ -192,6 +195,7 @@ Polynom BUA_for_Function()
 		dev_old = dev_new;
 		Q = BUA_for_Polynom(P, a, b);
 		dev_new = deviation(Q);
+		fprintf(out,"%d %lf\n", P.get_Deg(), dev_new);
 		//if (dev_old < dev_new) cout << "ALARM! " << endl;
 	}
 	cout << "THE PROCESS IS FINISHED. N = " << P.get_Deg() << ", dev = " << dev_old << endl;

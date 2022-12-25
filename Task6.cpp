@@ -10,6 +10,8 @@
 #include "Splines.cpp"
 #include "Matrix algebra.cpp"
 
+#include<stdio.h>
+
 using namespace std;
 
 int task6()
@@ -29,10 +31,22 @@ int task6()
 	{
 		cout << X.getelement(i) << endl;
 	}*/
-
+	/*
 	Spline S(1000);
 	cout.setf(ios::fixed);
 	cout << S.value(1.0) << endl;
-	S.dev(10000);
+	S.dev_show(10000);
+	*/
+	FILE* out;
+	fopen_s(&out, "task6/difference.txt", "w");
+
+	int n = 1;
+	double delta = 100;
+	while (delta > 0.0005) {
+		Spline S_temp(++n);
+		delta = S_temp.dev(10000);
+		fprintf(out,"%d %.8lf\n",n,delta);
+	}
+	cout << "enough n = " << n << endl;
 	return 0;
 }

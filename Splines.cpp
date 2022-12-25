@@ -1,4 +1,5 @@
 #include "Splines.h"
+
 /*
 double expression(double x)
 {
@@ -98,20 +99,44 @@ double Spline::value(double x)
 	return res;
 }
 
-double Spline::dev(int gridcard)
+double Spline::dev_show(int gridcard)
 {
 	vector<double> X = Uniform_grid(0.0, 2.0, gridcard);
 	double dev, max_dev, f, s;
 	max_dev = 0;
-	for(double x : X)
+	//FILE* out;
+	//fopen_s(&out, "task6/difference.txt", "w");
+	for (double x : X)
 	{
 		f = expression(x);
 		s = value(x);
 		dev = abs(f - s);
 		if (max_dev < dev) max_dev = dev;
 		cout << x << "\t" << f << "\t" << s << "\t" << setprecision(15) << dev << endl;
+		//fprintf(out,"%.9lf %.9lf\n",x,dev);
 	}
 	cout << "FINISHED. Maximum deviation for grid " << gridcard << " equals " << setprecision(15) << max_dev << endl;
+
+	return max_dev;
+}
+
+double Spline::dev(int gridcard)
+{
+	vector<double> X = Uniform_grid(0.0, 2.0, gridcard);
+	double dev, max_dev, f, s;
+	max_dev = 0;
+	//FILE* out;
+	//fopen_s(&out, "task6/difference.txt", "w");
+	for(double x : X)
+	{
+		f = expression(x);
+		s = value(x);
+		dev = abs(f - s);
+		if (max_dev < dev) max_dev = dev;
+		//cout << x << "\t" << f << "\t" << s << "\t" << setprecision(15) << dev << endl;
+		//fprintf(out,"%.9lf %.9lf\n",x,dev);
+	}
+	//cout << "FINISHED. Maximum deviation for grid " << gridcard << " equals " << setprecision(15) << max_dev << endl;
 
 	return max_dev;
 }

@@ -21,5 +21,6 @@ private:
 public:
 	Spline(int n);
 	double value(double x);
+	double dev_show(int gridcard);
 	double dev(int gridcard);
 };
