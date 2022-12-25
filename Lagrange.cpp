@@ -1,6 +1,7 @@
 //var 1 y=exp(x)/(1+x^2) [0,2] delta = 5*10^(-4)
-#pragma warning(disable : 6385)
-#pragma warning(disable : 26451)
+//#pragma warning(disable : 6385)
+//#pragma warning(disable : 26451)
+#pragma once
 #define _USE_MATH_DEFINES
 #include<vector>
 #include<stdio.h>

@@ -3,14 +3,17 @@
 #include<cmath>
 #include<stdio.h>
 #include<vector>
+#include "Lagrange.cpp"
 
 
 double alpha = 1/M_PI;
 double betta = 0;
 
+/*
 double expression(double x) {
 	return exp(x) / (1 + x * x);
 }
+*/
 
 
 std::pair<double,double> Coeffisient(double (*function)(double), std::vector<double> X,int k){
@@ -52,9 +55,7 @@ double expression2(double x) {
 	return exp(alpha*x+betta) / (1 + (alpha*x+betta)*(alpha*x+betta));
 }
 
-
-
-
+/*
 std::vector<double> Uniform_grid(double a, double b, int n) { //строит равномерную n-сетку
 	double h = (b - a) / (n);
 	std::vector<double> X;
@@ -63,7 +64,7 @@ std::vector<double> Uniform_grid(double a, double b, int n) { //строит р�
 	}
 	return X;
 }
-
+*/
 
 
 double Fourier(double (*function)(double), double a, double b, int n, double x){	
@@ -99,7 +100,7 @@ double Fourier_max_deviation(double (*function)(double),double a,double b,int n)
 	int grid = 100000;
 	double h = (b - a) / (grid);
 	std::vector<double> X;
-	for (int i = grid*5/8; i <= grid*6/8; i++) {
+	for (int i = grid*14/20; i <= grid*15/20; i++) {
 		X.push_back(a + h * i);
 	}
 	//std::cout<<"hi there"<<std::endl;
@@ -115,7 +116,7 @@ double Fourier_max_deviation(double (*function)(double),double a,double b,int n)
 	std::vector<std::pair<double,double>> Coeffisients;
 	Fourier_coeffs(function,X_interpolation,Coeffisients);
 	
-	for(int i = 0;i < grid/8+1;i++){
+	for(int i = 0;i < grid/20+1;i++){
 		value = function(X[i]) - Fourier_optimal(function,a,b,n,X[i],Coeffisients,X_interpolation);
 		value = std::abs(value);
 		//fprintf(out,"%lf %lf\n",i,value);
@@ -128,7 +129,7 @@ double Fourier_max_deviation(double (*function)(double),double a,double b,int n)
 
 void Fourier_show(double (*function)(double),int n){//рисует для [0,2*pi] 
 	FILE* out;
-	fopen_s(out,"Fourier/Fourier.txt","w");
+	fopen_s(&out,"Fourier/Fourier1.txt","w");
 	
 	int grid = 10000;
 	double h = (2*M_PI)/grid;
@@ -160,7 +161,7 @@ void Fourier_show(double (*function)(double),int n){//рисует для [0,2*p
 
 void Fourier_show2(double (*function)(double),int n){
 	FILE* out;
-	fopen_s(&out,"Fourier/Fourier.txt","w");
+	fopen_s(&out,"Fourier/Fourier2.txt","w");
 	
 	int grid = 10000;
 	double h = (2*M_PI)/grid;
@@ -192,7 +193,7 @@ void Fourier_show2(double (*function)(double),int n){
 
 void Fourier_show3(double (*function)(double),int n){
 	FILE* out;
-	fopen_s(out,"Fourier/Fourier.txt","w");
+	fopen_s(&out,"Fourier/Fourier1.txt","w");
 	
 	int grid = 10000;
 	double h = 2.0/grid;
@@ -224,24 +225,26 @@ void Fourier_show3(double (*function)(double),int n){
 
 void task1(){
 	std::cout<<"task1"<<std::endl;
-	int n;
+	int n = 10;
 	std::cout<<"n = ";
-	std::cin>>n;
+	//std::cin>>n;
 	Fourier_show(expression,n);
-	std::cout<<"write any letter"<<std::endl;
-	char c;
-	std::cin>>c;
+	std::cout << "check out in the dir" << std::endl;
+	//std::cout<<"write any letter"<<std::endl;
+	//char c;
+	//std::cin>>c;
 }
 
 void task2(){
 	std::cout<<"task2"<<std::endl;
-	int n;
-	std::cout<<"n = ";
-	std::cin>>n;
+	int n = 10;
+	//std::cout<<"n = ";
+	//std::cin>>n;
 	Fourier_show2(expression2,n);
-	std::cout<<"write any letter"<<std::endl;
-	char c;
-	std::cin>>c;
+	std::cout << "check out in the dir" << std::endl;
+	//std::cout<<"write any letter"<<std::endl;
+	//char c;
+	//std::cin>>c;
 }
 
 void task34(){
@@ -255,16 +258,13 @@ void task34(){
 	fopen_s(&out,"Fourier/max_difference.txt","w");
 	
 	
-	while(max>0.077){
+	while(max>0.0077){
 		max = Fourier_max_deviation(expression2,0,2,n);
 		std::cout<<"n = "<<n<<" max = "<<max<<std::endl;
 		fprintf(out,"%d %lf\n",n,max);
 		n++;
 	}
 	std::cout<<"optimal n is "<<n<<std::endl;
-	std::cout<<"write any letter"<<std::endl;
-	char c;
-	std::cin>>c;
 	fclose(out);
 }
 
@@ -272,6 +272,6 @@ void task34(){
 int NM_task4(){
 	task1();
 	task2();
-	task34();
+	//task34();
 	return 0;
 }

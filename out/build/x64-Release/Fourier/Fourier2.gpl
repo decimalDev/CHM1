@@ -1,0 +1,17 @@
+reset
+f(x) = exp(x)/(1+x*x)
+file = 'Fourier2'
+draw_file = file.'.png'
+data_file = sprintf("%s.%s", file, 'txt')
+a = 0
+b = 2
+c = 0
+d = 2
+set xrange [a:b]
+set yrange [c:d] 
+set terminal png size 800,800 enhanced font "Helvetica,20"
+set output draw_file
+
+plot f(x) with lines linestyle 2, \
+data_file with linespoints linestyle 1
+set out # закрываем файл
