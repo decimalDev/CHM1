@@ -12,7 +12,7 @@ using namespace std;
 int main()
 {
 	//cout << "Hello CMake." << endl;
-	//Lagrange_task();//1,2,3 task
+	Lagrange_task();//1,2,3 task
 	//NM_task4();
 	//task5();
 	//task6();
