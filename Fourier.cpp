@@ -21,16 +21,16 @@ std::pair<double,double> Coeffisient(double (*function)(double), std::vector<dou
 	double sum_AK = 0;
 	double sum_BK = 0;
 	for(int j = 0;j<n;j++){
-		sum_AK+=function(X[j])*cos(2*M_PI*k*j/n);
+		sum_AK+=function(X[j])*cos(2*M_PI*k*j/n);//X[0,2pi]
 		sum_BK+=function(X[j])*sin(2*M_PI*k*j/n);
 	}
 	return std::pair<double,double>{2*sum_AK/n,2*sum_BK/n};
 }
 
 void Fourier_coeffs(double (*function)(double),std::vector<double> &X,std::vector<std::pair<double,double>> &Coeffisients){
-	size_t n = X.size();
-	for(int k = 0;k<n/2;k++){
-		Coeffisients.push_back(Coeffisient(function,X,k));
+	size_t n = X.size();//функция определена на 0 2pi
+	for(int k = 0;k<n/2;k++){//по формуле мы суммируем только половину
+		Coeffisients.push_back(Coeffisient(function,X,k));//X[0,2pi]
 	}
 	Coeffisients[0].first = Coeffisients[0].first/2;
 }
@@ -69,7 +69,7 @@ std::vector<double> Uniform_grid(double a, double b, int n) { //строит р�
 
 double Fourier(double (*function)(double), double a, double b, int n, double x){	
 	n = 2*n + 1;
-	alpha = (b-a)/2/M_PI;
+	alpha = (b-a)/2/M_PI;//находим alpha
 	betta = a;
 	x = (x-betta)/alpha;
 	double h_interpolation = (2*M_PI)/n;
@@ -88,47 +88,46 @@ double Fourier_optimal(double (*function)(double), double a, double b, int n, do
 	//n = 2*n + 1;
 	alpha = (b-a)/2/M_PI;
 	betta = a;
-	x = (x-betta)/alpha;
 
 	return Fourier_value(x,X_interpolation,Coeffisients);
 	
 }
 
 double Fourier_max_deviation(double (*function)(double),double a,double b,int n){ //вычисляет наибольшее отклонение многочлена L_n (x) от начальной функции, перебирая значения на равномерной 10^5-сетке
-	
-	
 	int grid = 100000;
-	double h = (b - a) / (grid);
+	double h = (2 * M_PI) / (grid);
+	
 	std::vector<double> X;
-	for (int i = grid*14/20; i <= grid*15/20; i++) {
-		X.push_back(a + h * i);
+
+	for (int i = 4*grid/10; i < 6*grid/10; i++) {
+		X.push_back(h * i);
 	}
-	//std::cout<<"hi there"<<std::endl;
 	double max = 0;
 	double value;
 	
 	n = 2*n + 1;
 	double h_interpolation = (2*M_PI)/n;
 	std::vector<double> X_interpolation;
-	for(int i = 1;i<=n;i++){
-		X_interpolation.push_back(h_interpolation*(i-1));
-	}
+
+	for (int i = 0; i <= n ; i++) 
+		X_interpolation.push_back(h_interpolation * i);
+
 	std::vector<std::pair<double,double>> Coeffisients;
 	Fourier_coeffs(function,X_interpolation,Coeffisients);
-	
-	for(int i = 0;i < grid/20+1;i++){
-		value = function(X[i]) - Fourier_optimal(function,a,b,n,X[i],Coeffisients,X_interpolation);
+
+	for(double x: X){
+		value = Fourier_optimal(function, a, b, n, x, Coeffisients, X_interpolation);
+		value -= function(x);
 		value = std::abs(value);
-		//fprintf(out,"%lf %lf\n",i,value);
-	
-		if(value>max) max = value;
+
+		if (value > max) max = value;
 	}
 	
 	return max;
 }
 
 void Fourier_show(double (*function)(double),int n){//рисует для [0,2*pi] 
-	FILE* out;
+	FILE* out;//функция определена на 0 2pi
 	fopen_s(&out,"Fourier/Fourier1.txt","w");
 	
 	int grid = 10000;
@@ -139,7 +138,7 @@ void Fourier_show(double (*function)(double),int n){//рисует для [0,2*p
 
 	double value;
 	
-	n = 2*n + 1;
+	n = 2*n + 1;//рисует с 2n+1 узлами
 	double h_interpolation = (2*M_PI)/n;
 	std::vector<double> X_interpolation;
 	for(int i = 1;i<=n;i++){
@@ -223,12 +222,12 @@ void Fourier_show3(double (*function)(double),int n){
 	
 }
 
-void task1(){
+void task1(){//рисует для 2n
 	std::cout<<"task1"<<std::endl;
 	int n = 10;
 	std::cout<<"n = ";
 	//std::cin>>n;
-	Fourier_show(expression,n);
+	Fourier_show(expression,n);//интерполяция выражения на 0 2pi
 	std::cout << "check out in the dir" << std::endl;
 	//std::cout<<"write any letter"<<std::endl;
 	//char c;
@@ -240,11 +239,8 @@ void task2(){
 	int n = 10;
 	//std::cout<<"n = ";
 	//std::cin>>n;
-	Fourier_show2(expression2,n);
+	Fourier_show2(expression2,n);//функция определена на 0 2pi из 0 2
 	std::cout << "check out in the dir" << std::endl;
-	//std::cout<<"write any letter"<<std::endl;
-	//char c;
-	//std::cin>>c;
 }
 
 void task34(){
@@ -258,7 +254,7 @@ void task34(){
 	fopen_s(&out,"Fourier/max_difference.txt","w");
 	
 	
-	while(max>0.0077){
+	while(max>0.0005){
 		max = Fourier_max_deviation(expression2,0,2,n);
 		std::cout<<"n = "<<n<<" max = "<<max<<std::endl;
 		fprintf(out,"%d %lf\n",n,max);
@@ -272,6 +268,6 @@ void task34(){
 int NM_task4(){
 	task1();
 	task2();
-	//task34();
+	task34();
 	return 0;
 }
