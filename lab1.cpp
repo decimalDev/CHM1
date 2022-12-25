@@ -12,10 +12,10 @@ using namespace std;
 int main()
 {
 	//cout << "Hello CMake." << endl;
-	//Lagrange_task();
+	//Lagrange_task();//1,2,3 task
 	//NM_task4();
 	//task5();
-	task6();
+	//task6();
 	std::cout << "write any letter" << std::endl;
 	char c;
 	std::cin >> c;
