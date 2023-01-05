@@ -223,7 +223,7 @@ void Fourier_show4task(double (*function)(double), int n) {
 		value = Fourier_value(X[i], X_interpolation, Coeffisients);
 		//std::cout<<"value="<<value<<" func="<<function(X[i])<<" intep="<<Newton_optimal(function,X_interpolation,Coeffisients,X[i])<<std::endl;
 
-		fprintf(out, "%lf %lf\n", X[i] * alpha + betta, std::abs(expression(X[i] * alpha + betta)-value));
+		fprintf(out, "%lf %lf\n", X[i] * alpha + betta, std::abs(function(X[i])-value));
 	}
 
 }
@@ -309,6 +309,6 @@ int NM_task4(){
 	task1();
 	task2();
 	task34();
-	Fourier_show4task(expression,277);
+	Fourier_show4task(expression2,277);
 	return 0;
 }
