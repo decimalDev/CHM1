@@ -18,6 +18,6 @@ int main()
 	//task6();
 	std::cout << "write any letter" << std::endl;
 	char c;
-	std::cin >> c;
+	//std::cin >> c;
 	return 0;
 }

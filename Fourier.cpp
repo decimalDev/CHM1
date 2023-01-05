@@ -3,6 +3,7 @@
 #include<cmath>
 #include<stdio.h>
 #include<vector>
+#include<string>
 #include "Lagrange.cpp"
 
 
@@ -104,6 +105,12 @@ double Fourier_max_deviation(double (*function)(double),double a,double b,int n)
 	}
 	double max = 0;
 	double value;
+
+	//FILE* out;
+	//std::string file = "Fourier/Fourier_dif";
+	//file += std::to_string(n);
+	//file += ".txt";
+	//fopen_s(&out,file.c_str(),"w");
 	
 	n = 2*n + 1;
 	double h_interpolation = (2*M_PI)/n;
@@ -119,10 +126,11 @@ double Fourier_max_deviation(double (*function)(double),double a,double b,int n)
 		value = Fourier_optimal(function, a, b, n, x, Coeffisients, X_interpolation);
 		value -= function(x);
 		value = std::abs(value);
+		//fprintf(out,"%lf %.14lf\n",x, value);
 
 		if (value > max) max = value;
 	}
-	
+	//fclose(out);
 	return max;
 }
 
@@ -187,6 +195,37 @@ void Fourier_show2(double (*function)(double),int n){
 		fprintf(out,"%lf %lf\n",X[i]*alpha+betta,value);
 	}
 	
+}
+
+void Fourier_show4task(double (*function)(double), int n) {
+	FILE* out;
+	fopen_s(&out, "Fourier/Fourier_diff_n.txt", "w");
+
+	int grid = 10000;
+	double h = (2 * M_PI) / grid;
+	grid++;
+	std::vector<double> X;
+	for (int i = 0; i < grid; i++) X.push_back(i * h);
+
+	double value;
+
+	n = 2 * n + 1;
+	double h_interpolation = (2 * M_PI) / n;
+	std::vector<double> X_interpolation;
+	for (int i = 1; i <= n; i++) {
+		X_interpolation.push_back(h_interpolation * (i - 1));
+	}
+	std::vector<std::pair<double, double>> Coeffisients;
+	Fourier_coeffs(function, X_interpolation, Coeffisients);
+
+	for (int i = 0; i < grid; i++) {
+
+		value = Fourier_value(X[i], X_interpolation, Coeffisients);
+		//std::cout<<"value="<<value<<" func="<<function(X[i])<<" intep="<<Newton_optimal(function,X_interpolation,Coeffisients,X[i])<<std::endl;
+
+		fprintf(out, "%lf %lf\n", X[i] * alpha + betta, std::abs(expression(X[i] * alpha + betta)-value));
+	}
+
 }
 
 
@@ -257,9 +296,10 @@ void task34(){
 	while(max>0.0005){
 		max = Fourier_max_deviation(expression2,0,2,n);
 		std::cout<<"n = "<<n<<" max = "<<max<<std::endl;
-		fprintf(out,"%d %lf\n",n,max);
+		fprintf(out,"%d %.14lf\n",n,max);
 		n++;
 	}
+	n--;
 	std::cout<<"optimal n is "<<n<<std::endl;
 	fclose(out);
 }
@@ -269,5 +309,6 @@ int NM_task4(){
 	task1();
 	task2();
 	task34();
+	Fourier_show4task(expression,277);
 	return 0;
 }

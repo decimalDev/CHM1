@@ -98,7 +98,7 @@ void task2(int n_max, int &n_opt, double &max_diff){ //для всех n от 1 
 		max_difference[temp_n] = Lagrange_max_deviation(expression,0,2,n);
 		printf("n = %d\t max_dif = %lf\n",n,max_difference[temp_n]);
 		if(out!=0)
-		fprintf(out,"%d %lf\n", n, max_difference[temp_n]);
+		fprintf(out,"%d %.14lf\n", n, max_difference[temp_n]);
 
 		if(max_difference[temp_n]<max_difference[n_0]) n_0 = n - 1;
 	}
@@ -117,7 +117,7 @@ void task2(int n_max, int &n_opt, double &max_diff){ //для всех n от 1 
 	for (int i = 0; i < grid; i++) X.push_back( i * h);
 	for (int i = 0; i < grid; i++) {
 		if(dev_0!=0)
-		fprintf(dev_0, "%lf %lf\n", X[i], expression(X[i]) - Lagrange(expression, 0, 2, n_0, X[i]));
+		fprintf(dev_0, "%lf %.14lf\n", X[i], std::abs(expression(X[i]) - Lagrange(expression, 0, 2, n_0, X[i])));
 	}
 }
 
