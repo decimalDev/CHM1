@@ -44,6 +44,7 @@ int task6()
 	double delta = 100;
 	while (delta > 0.0005) {
 		Spline S_temp(++n);
+		cout << endl << endl;
 		delta = S_temp.dev(10000);
 		fprintf(out,"%d %.8lf\n",n,delta);
 	}

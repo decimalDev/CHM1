@@ -112,10 +112,10 @@ double Spline::dev_show(int gridcard)
 		s = value(x);
 		dev = abs(f - s);
 		if (max_dev < dev) max_dev = dev;
-		cout << x << "\t" << f << "\t" << s << "\t" << setprecision(15) << dev << endl;
+		//cout << x << "\t" << f << "\t" << s << "\t" << setprecision(15) << dev << endl;
 		//fprintf(out,"%.9lf %.9lf\n",x,dev);
 	}
-	cout << "FINISHED. Maximum deviation for grid " << gridcard << " equals " << setprecision(15) << max_dev << endl;
+	//cout << "FINISHED. Maximum deviation for grid " << gridcard << " equals " << setprecision(15) << max_dev << endl;
 
 	return max_dev;
 }
@@ -133,10 +133,10 @@ double Spline::dev(int gridcard)
 		s = value(x);
 		dev = abs(f - s);
 		if (max_dev < dev) max_dev = dev;
-		//cout << x << "\t" << f << "\t" << s << "\t" << setprecision(15) << dev << endl;
+		//cout <<endl<< x << "\t" << f << "\t" << s << "\t" << setprecision(15) << dev << endl;
 		//fprintf(out,"%.9lf %.9lf\n",x,dev);
 	}
-	//cout << "FINISHED. Maximum deviation for grid " << gridcard << " equals " << setprecision(15) << max_dev << endl;
+	cout << "FINISHED. Maximum deviation for grid " << gridcard << " equals " << setprecision(15) << max_dev << endl;
 
 	return max_dev;
 }

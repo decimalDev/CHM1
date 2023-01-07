@@ -5,7 +5,7 @@ draw_file = file.'.png'
 data_file = file.'.txt'
 
 set xrange [0:20]
-set yrange [0:0.14294672]
+set yrange [0:0.00031334547502]
 set style line 1 \
     linecolor rgb '#0060ad' \
     linetype 1 linewidth 2 \

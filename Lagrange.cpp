@@ -102,7 +102,7 @@ void task2(int n_max, int &n_opt, double &max_diff){ //для всех n от 1 
 
 		if(max_difference[temp_n]<max_difference[n_0]) n_0 = n - 1;
 	}
-	printf("optimal n is %d\n",n_0);
+	printf("optimal n is %d\n",n_0+1);
 	
 	n_0++;
 	n_opt = n_0;
@@ -117,7 +117,7 @@ void task2(int n_max, int &n_opt, double &max_diff){ //для всех n от 1 
 	for (int i = 0; i < grid; i++) X.push_back( i * h);
 	for (int i = 0; i < grid; i++) {
 		if(dev_0!=0)
-		fprintf(dev_0, "%lf %.14lf\n", X[i], std::abs(expression(X[i]) - Lagrange(expression, 0, 2, n_0, X[i])));
+		fprintf(dev_0, "%lf %.14lf\n", X[i], std::abs(expression(X[i]) - Lagrange(expression, 0, 2, n_0+1, X[i])));
 	}
 }
 
@@ -152,13 +152,23 @@ double Chebyshev_compare(double (*function)(double), double a, double b, int n) 
 	int grid = 100000;
 	std::vector<double> X = Uniform_grid(a, b, grid);
 
+	FILE* out;
+	//fopen_s(&out,"Lagrange/max_difference.txt","w");
+	fopen_s(&out, "Lagrange/Chebyshev_n0_deviation.txt", "w");
+	if (out == NULL) {
+		printf("ERROR\n");
+	}
+
 	double max = 0;
 	double value;
 	for (int i = 0; i < grid; i++) {
 		value = function(X[i]) - Chebyshev(n, function, a, b, X[i]);
+		
 		value = std::abs(value);
+		fprintf(out, "%.6lf %.14lf\n", X[i], value);
 		if (value > max) max = value;
 	}
+	fclose(out);
 	return max;
 }
 
